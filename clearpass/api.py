@@ -15,9 +15,14 @@
 # limitations under the License.
 #
 
+from __future__ import print_function
 from requests import Request, Session
 from time import time
-from urlparse import urljoin, urlparse, urlunparse
+# Support both Python 2 and Python 3
+try:
+    from urlparse import urljoin, urlparse, urlunparse
+except ImportError:
+    from urllib.parse import urljoin, urlparse, urlunparse
 
 _session = Session()
 
@@ -94,25 +99,25 @@ class Client:
 		if self.verbose:
 			prep = _session.prepare_request(Request(method=method, url=url, params=query_params,
 				headers=headers, data={}, json=body))
-			print prep.method, prep.path_url
+			print(prep.method, prep.path_url)
 			if prep.headers:
 				for name, value in prep.headers.items():
-					print '%s: %s' % (name, value)
-			print
+					print('%s: %s' % (name, value))
+			print()
 			if prep.body:
-				print prep.body
-			print
+				print(prep.body)
+			print()
 		response = _session.request(method, url, params=query_params,
 			headers=headers, json=body, timeout=self.timeout, verify=not self.insecure)
 		if self.verbose:
-			print 'HTTP/1.1', response.status_code, response.reason
+			print('HTTP/1.1', response.status_code, response.reason)
 			if response.headers:
 				for name, value in response.headers.items():
-					print '%s: %s' % (name, value)
-			print
+					print('%s: %s' % (name, value))
+			print()
 			if response.content:
-				print response.content
-			print
+				print(response.content)
+			print()
 		if response.status_code >= 400:
 			if 'json' in response.headers['Content-Type']:
 				details = response.json()

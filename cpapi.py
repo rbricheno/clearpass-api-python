@@ -73,7 +73,7 @@ import re
 import sys
 import warnings
 
-VERSION = 'cpapi.py 1.0'
+VERSION = 'cpapi.py 1.1'
 
 class CommandLineInterface:
 	def main(self):
@@ -96,7 +96,7 @@ class CommandLineInterface:
 				self.args['URL'], query, body, not self.args['--unauthorized'])
 			json.dump(result, sys.stdout, indent=4, sort_keys=True)
 			print("\n")
-		except api.ConfigurationException, e:
+		except api.ConfigurationException as e:
 			sys.stderr.write("ERROR: Configuration error: %s\n" % str(e))
 			exit_status = 3
 		return exit_status
